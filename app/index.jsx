@@ -1,8 +1,15 @@
 import { router } from "expo-router";
+import { useEffect } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import PlannerImg from "../assets/images/planner.png";
+import { checkAppwriteConnection } from "../services/checkConnection";
 
 const HomeScreen = () => {
+  useEffect(() => {
+    // This is where you can initialize any data or services
+    // For example, fetching user data or initializing services
+    checkAppwriteConnection();
+  }, []);
   return (
     <View
       style={{
@@ -15,10 +22,12 @@ const HomeScreen = () => {
         source={PlannerImg}
         style={{ width: 200, height: 200, marginBottom: 20 }}
       />
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>Welcome to the Beb Planner App!</Text>
+      <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+        Welcome to the Beb Planner App!
+      </Text>
       <Text style={{ fontSize: 16, marginTop: 10, textAlign: "center" }}>
         This is where we can manage our tasks and plans.
-     </Text>
+      </Text>
 
       <TouchableOpacity
         onPress={() => router.push("/main")}
@@ -29,7 +38,6 @@ const HomeScreen = () => {
           borderRadius: 5,
         }}
       >
-      
         <Text
           style={{
             textAlign: "center",
@@ -45,6 +53,6 @@ const HomeScreen = () => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
-export default HomeScreen
+export default HomeScreen;

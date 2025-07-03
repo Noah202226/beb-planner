@@ -9,21 +9,11 @@ import {
   View,
 } from "react-native";
 
-import taskService from "../../services/taskService";
+import { database } from "../../services/appwrite";
+import formatDate from "../utils/formatDate";
 
 const task = () => {
-  const [task, setTask] = useState([
-    {
-      id: 1,
-      taskName: "Make this work",
-      taskAdded: "07/01/2025",
-    },
-    {
-      id: 2,
-      taskName: "Set Goals and Plans",
-      taskAdded: "07/01/2025",
-    },
-  ]);
+  const [task, setTask] = useState([]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [newTask, setNewTask] = useState("");
@@ -31,23 +21,8 @@ const task = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchTask();
+    getDocuments();
   }, []);
-
-  const fetchTask = async () => {
-    setIsLoading(true);
-    const response = await taskService.getTasks();
-
-    if (response.error) {
-      setError(response.error);
-      Alert.alert("Error", response.error);
-    } else {
-      setTask(response.data);
-      setError(null);
-    }
-
-    setIsLoading(false);
-  };
 
   const saveNote = () => {
     if (newTask.trim() == "") return;
@@ -64,17 +39,31 @@ const task = () => {
     setModalVisible(false);
   };
 
+  const getDocuments = async () => {
+    try {
+      const response = await database.listDocuments(
+        "6863fdf40030a0e586bc",
+        "6863fe1d002023a8e395"
+      );
+      console.log("📄 Documents:", response.documents);
+      setTask(response.documents || []);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("❌ Failed to list documents:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text>task</Text>
 
       <FlatList
         data={task}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item) => item.$id || item.id}
         renderItem={({ item }) => (
           <View style={styles.noteItem}>
             <Text style={styles.noteText}>{item.taskName}</Text>
-            <Text style={styles.noteText}>{item.taskAdded}</Text>
+            <Text style={styles.noteText}>{formatDate(item.createdAt)}</Text>
           </View>
         )}
       />
