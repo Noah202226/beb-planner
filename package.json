@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "builk-apk": "eas build -p android --profile preview"
+    "build-apk": "eas build -p android --profile preview"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
