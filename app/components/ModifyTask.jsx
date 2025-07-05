@@ -1,6 +1,8 @@
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { database } from "../../services/appwrite";
 
+import useTaskStore from "../store/useTaskStore";
+
 const ModifyTask = ({
   showModifyTaskVisible,
   setModifyTaskVisible,
@@ -9,12 +11,19 @@ const ModifyTask = ({
   colId,
   getDocuments,
 }) => {
+  const getTasks = useTaskStore((state) => state.getTasks);
   const deleteTask = () => {
     database
       .deleteDocument(dbId, colId, selectedTaskToModify)
       .then((data) => {
         console.log("Task deleted", data);
-        getDocuments();
+        // getDocuments();
+
+        getTasks(database);
+        // Optionally, you can also update Zustand store here if needed
+        // useTaskStore.getState().getTasks(database);
+
+        // Close the modal after deletion
         setModifyTaskVisible(false);
       })
       .catch((e) => console.log(e));

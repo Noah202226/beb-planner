@@ -1,15 +1,26 @@
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import PlannerImg from "../assets/images/planner.png";
 import { checkAppwriteConnection } from "../services/checkConnection";
+import AuthScreen from "./components/AuthScreen";
 
 const HomeScreen = () => {
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     // This is where you can initialize any data or services
     // For example, fetching user data or initializing services
     checkAppwriteConnection();
+    const check = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+    };
+    check();
   }, []);
+  if (!user) {
+    return <AuthScreen />; // Show AuthScreen if user is not logged in
+  }
   return (
     <View
       style={{

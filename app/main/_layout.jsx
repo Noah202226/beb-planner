@@ -3,8 +3,10 @@ import { Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import useTaskStore from "../store/useTaskStore";
 
 export default function Layout() {
+  const taskStore = useTaskStore((state) => state.tasks);
   return (
     <Tabs
       screenOptions={{
@@ -33,7 +35,6 @@ export default function Layout() {
           tabBarIcon: (color, size) => (
             <FontAwesome5 name="tasks" size={size} color={color} />
           ),
-          tabBarBadge: 2,
         }}
       />
       <Tabs.Screen
@@ -43,7 +44,7 @@ export default function Layout() {
           tabBarIcon: (color, size) => (
             <FontAwesome5 name="tasks" size={size} color={color} />
           ),
-          tabBarBadge: 2,
+          tabBarBadge: taskStore.length > 0 ? taskStore.length : undefined,
         }}
       />
       <Tabs.Screen
@@ -53,7 +54,7 @@ export default function Layout() {
           tabBarIcon: (color, size) => (
             <AntDesign name="Trophy" size={size} color={color} />
           ),
-          tabBarBadge: 2,
+          tabBarBadge: 1,
         }}
       />
       <Tabs.Screen

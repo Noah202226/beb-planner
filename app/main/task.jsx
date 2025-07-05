@@ -16,7 +16,6 @@ const task = () => {
   const getDocuments = async () => {
     try {
       const response = await database.listDocuments(dbId, colId);
-      console.log("📄 Documents:", response.documents);
 
       const priorityOrder = {
         high: 3,
