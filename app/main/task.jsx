@@ -17,7 +17,22 @@ const task = () => {
     try {
       const response = await database.listDocuments(dbId, colId);
       console.log("📄 Documents:", response.documents);
-      setTask(response.documents || []);
+
+      const priorityOrder = {
+        high: 3,
+        medium: 2,
+        low: 1,
+      };
+
+      const sortedTask = [...response.documents].sort((a, b) => {
+        const priorityDiff =
+          priorityOrder[b.priority] - priorityOrder[a.priority];
+        if (priorityDiff !== 0) return priorityDiff;
+
+        // Convert deadlines to timestamps for comparison
+        return new Date(a.taskDeadline) - new Date(b.taskDeadline);
+      });
+      setTask(sortedTask || []);
       setIsLoading(false);
     } catch (error) {
       console.error("❌ Failed to list documents:", error);
