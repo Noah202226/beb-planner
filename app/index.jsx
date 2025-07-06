@@ -17,6 +17,8 @@ const HomeScreen = () => {
       setUser(currentUser);
     };
     check();
+
+    // You can also set up listeners or subscriptions here if needed
   }, []);
   if (!user) {
     return <AuthScreen />; // Show AuthScreen if user is not logged in

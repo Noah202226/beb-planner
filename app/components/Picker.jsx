@@ -36,8 +36,8 @@ const Picker = ({ selectedDateOnPicker, setSelectedDateOnPicker }) => {
         marginBottom: 5,
       }}
     >
-      <Text style={{ fontSize: 14, padding: 10, fontWeight: "bold" }}>
-        Set Deadline: {selectedDateOnPicker?.toLocaleString() || new Date()}
+      <Text style={{ fontSize: 16, padding: 10, fontWeight: "bold" }}>
+        Selected Date: {selectedDateOnPicker?.toLocaleString() || new Date()}
       </Text>
       <View
         style={{

@@ -24,6 +24,7 @@ export default function AuthScreen() {
       try {
         const currentUser = await account.get();
         setUser(currentUser);
+        console.log("User logged in: ", currentUser);
       } catch (err) {
         setUser(null);
       }
@@ -69,7 +70,8 @@ export default function AuthScreen() {
       {user ? (
         <>
           <Text style={styles.header}>
-            👋 Welcome, {user.name || user.email}!
+            👋 Welcome Beb,{" "}
+            {user.name !== "Noa" ? "Noa" : "Louriz" || user.email} 💕!
           </Text>
           <Button
             mode="contained"

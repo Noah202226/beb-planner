@@ -19,7 +19,7 @@ import {
 // utilities
 import formatDate from "../utils/formatDate";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ID } from "react-native-appwrite";
 import { database } from "../../services/appwrite";
 
@@ -35,7 +35,10 @@ import { FlashList } from "@shopify/flash-list";
 
 // Store
 import useTaskStore from "../store/useTaskStore";
+
+// Utils
 import formatDateAndTime from "../utils/formatDateAndTime";
+import TaskToSelect from "./TaskToSelect";
 
 const TaskList = ({
   dbId,
@@ -53,8 +56,11 @@ const TaskList = ({
   const [filterValue, setFilterValue] = useState("today");
   const [taskList, setTaskList] = useState([]);
 
+  const [taskTo, setTaskTo] = useState("Noa");
+
   // Zustand store for tasks
   const taskStore = useTaskStore((state) => state.tasks);
+  const authUser = useTaskStore((state) => state.authUser);
   const getTasks = useTaskStore((state) => state.getTasks);
 
   const filteredTasks = taskStore.filter((task) => {
@@ -70,12 +76,6 @@ const TaskList = ({
       return true; // For "all", show all tasks
     }
   });
-
-  useEffect(() => {
-    if (taskList.length === 0) {
-      getTasks(database);
-    }
-  }, []);
 
   const [showModifyTaskVisible, setModifyTaskVisible] = useState(false);
   const [selecteTaskToModify, setSelectedTaskToModify] = useState(undefined);
@@ -101,13 +101,17 @@ const TaskList = ({
 
   const saveNote = () => {
     if (newTask.trim() == "") return;
-    console.log(selectedDateOnPicker);
+
+    console.log("AuthState ", authUser.name);
+
     const data = {
       taskName: newTask,
       taskPurpose: taskPurpose,
       taskDeadline: selectedDateOnPicker,
       priority: taskPriority,
       createdAt: new Date(),
+      createdBy: authUser.name, // Get the current user's ID
+      taskTo: taskTo,
     };
 
     database
@@ -343,6 +347,8 @@ const TaskList = ({
                   taskPriority={taskPriority}
                   setTaskPriority={setTaskPriority}
                 />
+
+                <TaskToSelect taskTo={taskTo} setTaskTo={setTaskTo} />
 
                 <View style={styles.modalButtons}>
                   <TouchableOpacity

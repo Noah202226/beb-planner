@@ -3,6 +3,8 @@ import { create } from "zustand";
 const dbId = "6863fdf40030a0e586bc";
 const colId = "6863fe1d002023a8e395";
 const useTaskStore = create((set) => ({
+  authUser: null,
+  setAuthUser: (user) => set({ authUser: user }),
   tasks: [],
   getTasks: async (database) => {
     try {

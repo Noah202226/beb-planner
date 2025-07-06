@@ -17,13 +17,9 @@ const ModifyTask = ({
       .deleteDocument(dbId, colId, selectedTaskToModify)
       .then((data) => {
         console.log("Task deleted", data);
-        // getDocuments();
 
         getTasks(database);
-        // Optionally, you can also update Zustand store here if needed
-        // useTaskStore.getState().getTasks(database);
 
-        // Close the modal after deletion
         setModifyTaskVisible(false);
       })
       .catch((e) => console.log(e));
