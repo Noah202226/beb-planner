@@ -16,6 +16,7 @@ const plans = () => {
       name: plan.planName,
       planDate: format(new Date(plan.planDate), "yyyy-MM-dd"),
       time: format(new Date(plan.planDate), "hh:mm a"),
+      fullDateTime: new Date(plan.planDate).toISOString(),
     });
     return acc;
   }, {});

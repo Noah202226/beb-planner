@@ -63,12 +63,14 @@ export default function CalendarWithAgenda({ newEVents }) {
         });
       });
 
+      console.log("All events", dayEvents);
+
       // sort by nearest date-time
-      dayEvents.sort((a, b) => {
-        const dateTimeA = new Date(`${a.date} ${a.time}`).getTime();
-        const dateTimeB = new Date(`${b.date} ${b.time}`).getTime();
-        return dateTimeA - dateTimeB;
-      });
+      dayEvents.sort(
+        (a, b) => new Date(a.fullDateTime) - new Date(b.fullDateTime)
+      );
+
+      console.log("Sorted events", dayEvents);
     }
 
     if (dayEvents.length === 0) {
