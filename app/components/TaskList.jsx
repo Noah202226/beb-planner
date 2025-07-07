@@ -123,6 +123,10 @@ const TaskList = ({
         setModalVisible(false);
         console.log("task added");
         setNewTask("");
+        setTaskPurpose("");
+        setSelectedDateOnPicker(new Date());
+        setTaskPriority("LOW");
+        setTaskTo("Noa");
       })
       .catch((e) => {
         console.log(e);
@@ -318,16 +322,22 @@ const TaskList = ({
                 <Text style={styles.modalTitle}>Add a New Task!</Text>
 
                 <TextInput
-                  style={{ marginBottom: 10 }}
+                  style={{ marginBottom: 10, backgroundColor: "#fff" }}
                   placeholder="Enter task..."
                   placeholderTextColor="#aaa"
                   value={newTask}
                   onChangeText={(e) => setNewTask(e)}
                   mode="outlined"
+                  textColor="black"
                 />
 
                 <TextInput
-                  // style={styles.input}
+                  style={{
+                    marginBottom: 10,
+                    backgroundColor: "#fff",
+                    height: 80,
+                  }}
+                  textColor="black"
                   placeholder="Enter task purpose..."
                   placeholderTextColor="#aaa"
                   value={taskPurpose}
@@ -335,7 +345,6 @@ const TaskList = ({
                   mode="outlined"
                   multiline
                   numberOfLines={3}
-                  style={{ height: 100 }}
                 />
 
                 <Picker

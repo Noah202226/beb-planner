@@ -47,33 +47,63 @@ export default function CalendarWithAgenda({ newEVents }) {
   };
 
   const renderEvents = () => {
-    const dayEvents = newEVents[selectedDate] || [];
+    let dayEvents = [];
+
+    if (selectedDate && newEVents[selectedDate]) {
+      // If there's a selected date, show only its events
+      dayEvents = newEVents[selectedDate];
+    } else {
+      // flatten to get all events
+      Object.keys(newEVents).forEach((date) => {
+        newEVents[date].forEach((event) => {
+          dayEvents.push({
+            ...event,
+            date,
+          });
+        });
+      });
+
+      // sort by nearest date-time
+      dayEvents.sort((a, b) => {
+        const dateTimeA = new Date(`${a.date} ${a.time}`).getTime();
+        const dateTimeB = new Date(`${b.date} ${b.time}`).getTime();
+        return dateTimeA - dateTimeB;
+      });
+    }
 
     if (dayEvents.length === 0) {
       return (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyStateText}>No events for this day</Text>
+          <Text style={styles.emptyStateText}>No events found</Text>
         </View>
       );
     }
 
-    return dayEvents.map((event) => (
-      <TouchableOpacity
-        key={event.id}
-        style={styles.eventItem}
-        onPress={() => {
-          console.log(`Event clicked: ${event.name} at ${event.id}`);
-          setEventId(event.id);
-          setEventName(event.name);
-          // Open modify modal with event details
-          setModifyModalVisible(true);
-        }}
-      >
-        <Text style={styles.eventTime}>{event.time}</Text>
-        <Text style={styles.eventName}>{event.name}</Text>
-      </TouchableOpacity>
-    ));
+    return dayEvents.map(
+      (event) => (
+        console.log(event),
+        (
+          <TouchableOpacity
+            key={event.id}
+            style={styles.eventItem}
+            onPress={() => {
+              console.log(
+                `Event clicked: ${event.name} at ${event.id} ${event.planDate}`
+              );
+              setEventId(event.id);
+              setEventName(event.name);
+              setModifyModalVisible(true);
+            }}
+          >
+            <Text style={styles.eventTime}>{event.planDate}</Text>
+            <Text style={styles.eventName}>{event.name}</Text>
+          </TouchableOpacity>
+        )
+      )
+    );
   };
+
+  console.log("newEVents", newEVents);
 
   return (
     <View style={styles.container}>
@@ -99,7 +129,12 @@ export default function CalendarWithAgenda({ newEVents }) {
       />
 
       <View style={styles.eventsContainer}>
-        <Text style={styles.eventsTitle}>Events for {selectedDate}</Text>
+        <Text style={styles.eventsTitle}>
+          {selectedDate && newEVents[selectedDate]
+            ? `Events for ${selectedDate}`
+            : "All Events"}
+        </Text>
+
         <ScrollView
           style={styles.eventsList}
           showsVerticalScrollIndicator={false}

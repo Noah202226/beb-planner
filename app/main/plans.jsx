@@ -14,6 +14,8 @@ const plans = () => {
     acc[format(new Date(plan.planDate), "yyyy-MM-dd")].push({
       id: plan.$id,
       name: plan.planName,
+      planDate: format(new Date(plan.planDate), "yyyy-MM-dd"),
+      time: format(new Date(plan.planDate), "hh:mm a"),
     });
     return acc;
   }, {});
