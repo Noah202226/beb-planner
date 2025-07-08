@@ -6,6 +6,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { account, database } from "../../services/appwrite";
+
+// Stores
+import useFinanceStore from "../store/useFinanceStore";
 import usePlanStore from "../store/usePlanStore";
 import useTaskStore from "../store/useTaskStore";
 
@@ -17,10 +20,12 @@ export default function Layout() {
 
   const planStore = usePlanStore((state) => state.plans);
   const getPlans = usePlanStore((state) => state.getPlans);
+  const getFinances = useFinanceStore((state) => state.getFinanceTransactions);
 
   useEffect(() => {
     getTasks(database);
     getPlans(database);
+    getFinances();
     // Fetch the current user and set it in the store
 
     account

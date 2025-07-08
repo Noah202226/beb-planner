@@ -1,12 +1,19 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import TransactionList from "../components/finances/TransactionList";
 
 const finance = () => {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 22, padding: 20 }}>Finance recordings here</Text>
-      <Text>-income</Text>
-      <Text>-expenses today</Text>
-      <Text>-total expenses</Text>
+    <View
+      style={{
+        flex: 1,
+        alignContent: "center",
+        justifyContent: "center",
+        height: 100,
+      }}
+    >
+      {/* <FInanceDataTable /> */}
+
+      <TransactionList />
     </View>
   );
 };

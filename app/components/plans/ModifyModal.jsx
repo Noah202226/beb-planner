@@ -13,55 +13,51 @@ const ModifyModal = ({ eventId, eventName, modalvisible, setModalVisible }) => {
   };
   const hideModal = () => setModalVisible(false);
   return (
-    <>
-      <Portal>
-        <Modal
-          visible={modalvisible}
-          onDismiss={hideModal}
-          contentContainerStyle={containerStyle}
+    <Portal>
+      <Modal
+        visible={modalvisible}
+        onDismiss={hideModal}
+        contentContainerStyle={containerStyle}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "bold",
+            textAlign: "center",
+            marginVertical: 10,
+          }}
         >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "bold",
-              textAlign: "center",
-              marginVertical: 10,
-            }}
-          >
-            Are you sure to delete this event?
-          </Text>
-          <Text
-            style={{ fontSize: 20, fontWeight: "bold", marginVertical: 20 }}
-          >
-            Event: {eventName}
-          </Text>
+          Are you sure to delete this event?
+        </Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold", marginVertical: 20 }}>
+          Event: {eventName}
+        </Text>
 
-          <Button
-            mode="contained"
-            buttonColor="red"
-            textColor="#ececec"
-            onPress={() =>
-              deleteEvent(eventId).then(() => {
-                setModalVisible(false);
-              })
-            }
-            style={{ marginBottom: 10 }}
-          >
-            Delete Event
-          </Button>
-          <Text
-            style={{
-              fontSize: 14,
-              fontStyle: "italic",
-              textAlign: "center",
-              marginVertical: 5,
-            }}
-          >
-            This action cannot be undone.
-          </Text>
-        </Modal>
-      </Portal>
-    </>
+        <Button
+          mode="contained"
+          buttonColor="red"
+          textColor="#ececec"
+          onPress={() =>
+            deleteEvent(eventId).then(() => {
+              setModalVisible(false);
+            })
+          }
+          style={{ marginBottom: 10 }}
+        >
+          Delete Event
+        </Button>
+        <Text
+          style={{
+            fontSize: 14,
+            fontStyle: "italic",
+            textAlign: "center",
+            marginVertical: 5,
+          }}
+        >
+          This action cannot be undone.
+        </Text>
+      </Modal>
+    </Portal>
   );
 };
 
