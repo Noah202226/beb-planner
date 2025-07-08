@@ -176,7 +176,11 @@ const TaskList = ({
             onValueChange={(value) => {
               setFilterValue(value);
             }}
-            style={{ marginBottom: 10 }}
+            style={{
+              marginBottom: 10,
+              backgroundColor: "coral",
+              borderRadius: 20,
+            }}
             density="small"
             buttons={[
               {
