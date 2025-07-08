@@ -1,59 +1,77 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { FlashList } from "@shopify/flash-list";
-import { Avatar, Card } from "react-native-paper";
+import { ActivityIndicator, Avatar, Card } from "react-native-paper";
 import useFinanceStore from "../../store/useFinanceStore";
 import formatDateAndTime from "../../utils/formatDateAndTime";
+
+import AddTxFab from "./AddTxFab"; // Assuming you have this component for adding transactions
 
 const TransactionList = () => {
   const LeftContent = (props) => <Avatar.Icon {...props} icon="file" />;
 
   const transactions = useFinanceStore((state) => state.transactions);
+  const isLoading = useFinanceStore((state) => state.isLoading);
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
-      <Text>TransactionList</Text>
+      {isLoading == true ? (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text>Fetching Task...</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      ) : (
+        <>
+          <Text>TransactionList</Text>
 
-      <FlashList
-        estimatedItemSize={100}
-        data={transactions}
-        keyExtractor={(item) => item.$id || item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              console.log("Show ID: ", item.$id || item.id);
-            }}
-          >
-            <Card
-              style={{
-                backgroundColor:
-                  item.transactionType == "expense" ? "#FFCCCB" : "90EE90",
-                marginBottom: 10,
-              }}
-            >
-              <Card.Title
-                titleStyle={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color:
-                    item.transactionType == "expense" ? "#FFCCCB" : "#90EE90",
+          <FlashList
+            estimatedItemSize={100}
+            data={transactions}
+            keyExtractor={(item) => item.$id || item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("Show ID: ", item.$id || item.id);
                 }}
-                subtitleStyle={{
-                  color: item.priority == "expense" ? "white" : "black",
-                }}
-                title={
-                  <View>
-                    <Text>{item.transactionName}</Text>
-                    <Text>{item.amount}</Text>
-                  </View>
-                }
-                subtitle={formatDateAndTime(item.transactionDate)}
-                left={LeftContent}
-              />
-            </Card>
-          </TouchableOpacity>
-        )}
-      />
+              >
+                <Card
+                  style={{
+                    backgroundColor:
+                      item.transactionType == "expense" ? "#FFCCCB" : "90EE90",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Card.Title
+                    titleStyle={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      color:
+                        item.transactionType == "expense"
+                          ? "#FFCCCB"
+                          : "#90EE90",
+                    }}
+                    subtitleStyle={{
+                      color: item.priority == "expense" ? "white" : "black",
+                    }}
+                    title={
+                      <View>
+                        <Text>{item.transactionName}</Text>
+                        <Text>{item.amount}</Text>
+                      </View>
+                    }
+                    subtitle={formatDateAndTime(item.transactionDate)}
+                    left={LeftContent}
+                  />
+                </Card>
+              </TouchableOpacity>
+            )}
+          />
+        </>
+      )}
+
+      <AddTxFab />
     </View>
   );
 };

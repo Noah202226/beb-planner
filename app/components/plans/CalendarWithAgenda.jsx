@@ -63,14 +63,10 @@ export default function CalendarWithAgenda({ newEVents }) {
         });
       });
 
-      console.log("All events", dayEvents);
-
       // sort by nearest date-time
       dayEvents.sort(
         (a, b) => new Date(a.fullDateTime) - new Date(b.fullDateTime)
       );
-
-      console.log("Sorted events", dayEvents);
     }
 
     if (dayEvents.length === 0) {
@@ -81,28 +77,23 @@ export default function CalendarWithAgenda({ newEVents }) {
       );
     }
 
-    return dayEvents.map(
-      (event) => (
-        console.log(event),
-        (
-          <TouchableOpacity
-            key={event.id}
-            style={styles.eventItem}
-            onPress={() => {
-              console.log(
-                `Event clicked: ${event.name} at ${event.id} ${event.planDate}`
-              );
-              setEventId(event.id);
-              setEventName(event.name);
-              setModifyModalVisible(true);
-            }}
-          >
-            <Text style={styles.eventTime}>{event.planDate}</Text>
-            <Text style={styles.eventName}>{event.name}</Text>
-          </TouchableOpacity>
-        )
-      )
-    );
+    return dayEvents.map((event) => (
+      <TouchableOpacity
+        key={event.id}
+        style={styles.eventItem}
+        onPress={() => {
+          console.log(
+            `Event clicked: ${event.name} at ${event.id} ${event.planDate}`
+          );
+          setEventId(event.id);
+          setEventName(event.name);
+          setModifyModalVisible(true);
+        }}
+      >
+        <Text style={styles.eventTime}>{event.planDate}</Text>
+        <Text style={styles.eventName}>{event.name}</Text>
+      </TouchableOpacity>
+    ));
   };
 
   console.log("newEVents", newEVents);

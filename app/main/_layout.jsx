@@ -9,6 +9,7 @@ import { account, database } from "../../services/appwrite";
 
 // Stores
 import useFinanceStore from "../store/useFinanceStore";
+import useJournalStore from "../store/useJournalStore";
 import usePlanStore from "../store/usePlanStore";
 import useTaskStore from "../store/useTaskStore";
 
@@ -21,11 +22,13 @@ export default function Layout() {
   const planStore = usePlanStore((state) => state.plans);
   const getPlans = usePlanStore((state) => state.getPlans);
   const getFinances = useFinanceStore((state) => state.getFinanceTransactions);
-
+  const getJournals = useJournalStore((state) => state.getJournals);
+  const journals = useJournalStore((state) => state.journals);
   useEffect(() => {
     getTasks(database);
     getPlans(database);
     getFinances();
+    getJournals();
     // Fetch the current user and set it in the store
 
     account
@@ -94,12 +97,13 @@ export default function Layout() {
           }}
         />
         <Tabs.Screen
-          name="profile"
+          name="journal"
           options={{
-            tabBarLabel: "Profile",
+            tabBarLabel: "Journal",
             tabBarIcon: (color, size) => (
               <MaterialIcons name="space-dashboard" size={size} color={color} />
             ),
+            tabBarBadge: journals.length > 0 ? journals.length : undefined,
           }}
         />
       </Tabs>

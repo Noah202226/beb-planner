@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { database } from "../../services/appwrite";
 
 const dbId = "6863fdf40030a0e586bc";
 const planColId = "journals"; // Assuming the collection ID for plans is the same as tasks

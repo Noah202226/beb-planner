@@ -1,15 +1,36 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { FlashList } from "@shopify/flash-list";
-import { Modal } from "react-native-paper";
+import { useState } from "react";
+import { Avatar, Card, Modal, TextInput } from "react-native-paper";
+
+import formatDateAndTime from "../../utils/formatDateAndTime";
+import Picker from "../Picker";
+import AddJournalFAB from "./AddJournalFAB";
+
+import useJournalStore from "../../store/useJournalStore";
 
 const JournalList = () => {
   const LeftContent = (props) => <Avatar.Icon {...props} icon="file" />;
-  const transactions = useFinanceStore((state) => state.transactions);
-  const modalVisible = useFinanceStore((state) => state.modalVisible);
-  const setModalVisible = useFinanceStore((state) => state.setModalVisible);
+  const journals = useJournalStore((state) => state.journals);
+  const modalVisible = useJournalStore((state) => state.modalVisible);
+  const setModalVisible = useJournalStore((state) => state.setModalVisible);
 
-  const [newTask, setNewTask] = useState("");
+  const [journalTitle, setJournalTitle] = useState("");
+  const [journalPurpose, setJournalPurpose] = useState("");
+  const [selectedDateOnPicker, setSelectedDateOnPicker] = useState(new Date());
+
+  const saveJournal = () => {
+    if (journalTitle.trim() === "" || journalPurpose.trim() === "") {
+      alert("Please fill in all fields.");
+      return;
+    }
+    const newJournal = {
+      journalName: journalTitle,
+      journalPurpose: journalPurpose,
+      createdAt: new Date().toISOString(),
+    };
+  };
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
@@ -17,7 +38,7 @@ const JournalList = () => {
 
       <FlashList
         estimatedItemSize={100}
-        data={transactions}
+        data={journals}
         keyExtractor={(item) => item.$id || item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -44,11 +65,11 @@ const JournalList = () => {
                 }}
                 title={
                   <View>
-                    <Text>{item.transactionName}</Text>
-                    <Text>{item.amount}</Text>
+                    <Text>{item.journalName}</Text>
+                    <Text>{item.journalDetails}</Text>
                   </View>
                 }
-                subtitle={formatDateAndTime(item.transactionDate)}
+                subtitle={formatDateAndTime(item.createdAt)}
                 left={LeftContent}
               />
             </Card>
@@ -71,8 +92,8 @@ const JournalList = () => {
               style={{ marginBottom: 10, backgroundColor: "#fff" }}
               placeholder="Journal name..."
               placeholderTextColor="#aaa"
-              value={newTask}
-              onChangeText={(e) => setNewTask(e)}
+              value={journalTitle}
+              onChangeText={(e) => setJournalTitle(e)}
               mode="outlined"
               textColor="black"
             />
@@ -86,8 +107,8 @@ const JournalList = () => {
               textColor="black"
               placeholder="Enter task purpose..."
               placeholderTextColor="#aaa"
-              value={taskPurpose}
-              onChangeText={(e) => setTaskPurpose(e)}
+              value={journalPurpose}
+              onChangeText={(e) => setJournalPurpose(e)}
               mode="outlined"
               multiline
               numberOfLines={3}
@@ -98,8 +119,6 @@ const JournalList = () => {
               setSelectedDateOnPicker={setSelectedDateOnPicker}
             />
 
-            <TaskToSelect taskTo={taskTo} setTaskTo={setTaskTo} />
-
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.cancelButton}
@@ -108,13 +127,15 @@ const JournalList = () => {
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.saveButton} onPress={saveNote}>
+              <TouchableOpacity style={styles.saveButton} onPress={saveJournal}>
                 <Text style={styles.saveButtonText}>Save</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
+
+      <AddJournalFAB />
     </View>
   );
 };

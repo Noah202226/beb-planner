@@ -21,8 +21,6 @@ const plans = () => {
     return acc;
   }, {});
 
-  console.log("New Events", newEVents);
-
   return (
     <>
       <CalendarWithAgenda newEVents={newEVents} />

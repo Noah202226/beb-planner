@@ -11,6 +11,7 @@ const useFinanceStore = create((set) => ({
     try {
       const response = await database.listDocuments(dbId, planColId);
       set({ transactions: response.documents || [] });
+      set({ isLoading: false });
     } catch (error) {
       console.error("❌ Failed to list documents:", error);
     }
@@ -41,6 +42,9 @@ const useFinanceStore = create((set) => ({
 
   visibleAddModal: false,
   setVisibleAddModal: (visible) => set({ visibleAddModal: visible }),
+
+  isLoading: true,
+  setIsLoading: (loading) => set({ isLoading: loading }),
 }));
 
 export default useFinanceStore;
